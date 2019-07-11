@@ -3,9 +3,12 @@
 SpringMVC + Spring + Mybatis Java开发平台平台
 
 ## 初始构建
-该项目的最初始构建始于：[eclipse下SpringMVC+Maven+Mybatis+MySQL项目搭建](/demo_springmvc+mybatis+maven.md)
+该项目的最初始构建始于：[eclipse下SpringMVC+Maven+Mybatis+MySQL项目搭建](https://github.com/LycPandaria/simple_server/blob/master/demo_springmvc+mybatis+maven.md)
 
 之后会慢慢为其增加各类特性
+
+## 增加日志
+[Log](./note/log.md)
 
 ## 运行
 1. fork() 或者 下载
