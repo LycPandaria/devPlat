@@ -3,8 +3,8 @@ package simpleserver.test.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import edu.devplat.model.TrunkItem;
-import edu.devplat.service.TrunkItemService;
+import edu.devplat.sys.model.TrunkItem;
+import edu.devplat.sys.service.TrunkItemService;
 
 import simpleserver.test.SpringTest;
 

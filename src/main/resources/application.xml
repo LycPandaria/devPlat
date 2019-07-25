@@ -33,7 +33,9 @@
 
     <!-- 自动扫描了所有的XxxxMapper.xml对应的mapper接口文件，这样就不用一个一个手动配置Mpper的映射了，只要Mapper接口类和Mapper映射文件对应起来就可以了。 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="edu.devplat.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <property name="basePackage" value="edu.devplat" />
+        <property name="annotationClass" value="edu.devplat.common.persistence.annotation.MyBatisDao"/>
     </bean>
 
     <!-- 配置Mybatis的文件 ，mapperLocations配置**Mapper.xml文件位置，configLocation配置mybatis-config文件位置-->
@@ -46,6 +48,9 @@
 
     <!-- spring可以自动去扫描base-pack下面的包或者子包下面的java文件，
     	如果扫描到有Spring的相关注解的类，则把这些类注册为Spring的bean -->
-    <context:component-scan base-package="edu.devplat.service" />
+    <!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。  -->
+    <context:component-scan base-package="edu.devplat">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
 </beans>
