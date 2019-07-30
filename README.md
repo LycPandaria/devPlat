@@ -10,6 +10,11 @@ SpringMVC + Spring + Mybatis Java开发平台平台
 ## 增加日志
 [Log](./note/log.md)
 
+## 系统 Global 常量类解析
+[Global](./note/Global.md)
+
+## jsp-tld
+- [tlds](./note/tlds.md) 介绍 tld 文件在系统中的应用和原理
 ## 运行
 1. fork() 或者 下载
 2. 导入eclipse 或者 IntelliJ 中
