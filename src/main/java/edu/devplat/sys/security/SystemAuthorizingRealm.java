@@ -21,6 +21,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+
+
     /**
      * 认证回调函数，通过传入的AuthenticationToken进行登录尝试
      * @param token
