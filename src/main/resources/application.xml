@@ -41,9 +41,11 @@
     <!-- 配置Mybatis的文件 ，mapperLocations配置**Mapper.xml文件位置，configLocation配置mybatis-config文件位置-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>  
+        <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
-        <!-- <property name="typeAliasesPackage" value="com.tiantian.ckeditor.model" /> -->
+        <!-- 下面两个配置可以方便在 mapper 中不用写类的全限定名 例如：edu.devplat.sys.model.User -> User -->
+        <property name="typeAliasesPackage" value="edu.devplat"/>
+        <property name="typeAliasesSuperType" value="edu.devplat.common.persistence.BaseEntity"/>
     </bean>
 
     <!-- spring可以自动去扫描base-pack下面的包或者子包下面的java文件，

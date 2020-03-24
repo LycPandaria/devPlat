@@ -1,16 +1,26 @@
 package edu.devplat.sys.security;
 
+import edu.devplat.common.config.Global;
+import edu.devplat.common.utils.Encodes;
+import edu.devplat.common.utils.SpringContextHolder;
+import edu.devplat.sys.dao.UserDao;
+import edu.devplat.sys.model.User;
+import edu.devplat.sys.service.SystemService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.Serializable;
 
 /**
@@ -22,6 +32,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
 
+    private SystemService systemService;
 
     /**
      * 认证回调函数，通过传入的AuthenticationToken进行登录尝试
@@ -37,12 +48,20 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
             logger.debug("login submit!");
 
         // 校验用户名和密码
-        String userCode = (String)authToken.getPrincipal();
-        // 模拟密码
-        String password = "111111";
+        // 获取用于
+        User user = getSystemService().getUserByLoginName(authToken.getUsername());
+        if(user != null){
+            if(Global.NO.equals(user.getLoginFlag()))
+                throw new AuthenticationException("msg:该已帐号禁止登录.");
+            // 密码盐
+            byte[] salt = Encodes.decodeHex(user.getPassword().substring(0,16));
 
-        // 认证过程
-        return new SimpleAuthenticationInfo(userCode, password, this.getName());
+            // 认证过程
+            return new SimpleAuthenticationInfo(authToken.getUsername(),
+                    user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
+        }else
+            return null;
+
     }
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -50,6 +69,25 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
     }
 
 
+    /**
+     * 获取系统业务对象
+     */
+    public SystemService getSystemService() {
+        if (systemService == null){
+            systemService = SpringContextHolder.getBean(SystemService.class);
+        }
+        return systemService;
+    }
+
+    /**
+     * 设定密码校验的Hash算法与迭代次数
+     */
+    @PostConstruct
+    public void initCredentialsMatcher() {
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(SystemService.HASH_ALGORITHM);
+        matcher.setHashIterations(SystemService.HASH_INTERATIONS);
+        setCredentialsMatcher(matcher);
+    }
 
 //    /**
 //     * 用户信息
