@@ -72,13 +72,13 @@
 <!--    <example>${fns:getPrincipal()}</example>  -->
 <!--  </function>-->
 <!--  -->
-<!--  <function>-->
-<!--    <description>获取当前用户的菜单对象列表</description>-->
-<!--    <name>getMenuList</name>-->
-<!--    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>-->
-<!--    <function-signature>java.util.List getMenuList()</function-signature>-->
-<!--    <example>${fns:getMenuList()}</example>  -->
-<!--  </function>-->
+  <function>
+    <description>获取当前用户的菜单对象列表</description>
+    <name>getMenuList</name>
+    <function-class>edu.devplat.sys.utils.UserUtils</function-class>
+    <function-signature>java.util.List getMenuList()</function-signature>
+    <example>${fns:getMenuList()}</example>
+  </function>
 <!--  -->
 <!--  <function>-->
 <!--    <description>获取当前用户的区域对象列表</description>-->
@@ -105,13 +105,13 @@
 <!--  </function>-->
 <!--	-->
 <!--  &lt;!&ndash; DictUtils &ndash;&gt;-->
-<!--  <function>-->
-<!--    <description>获取字典标签</description>-->
-<!--    <name>getDictLabel</name>-->
-<!--    <function-class>com.thinkgem.jeesite.modules.sys.utils.DictUtils</function-class>-->
-<!--    <function-signature>java.lang.String getDictLabel(java.lang.String, java.lang.String, java.lang.String)</function-signature>-->
-<!--    <example>${fns:getDictLabel(value, type, defaultValue)}</example>  -->
-<!--  </function>-->
+  <function>
+    <description>获取字典标签</description>
+    <name>getDictLabel</name>
+    <function-class>edu.devplat.sys.utils.DictUtils</function-class>
+    <function-signature>java.lang.String getDictLabel(java.lang.String, java.lang.String, java.lang.String)</function-signature>
+    <example>${fns:getDictLabel(value, type, defaultValue)}</example>
+  </function>
 <!--  -->
 <!--  <function>-->
 <!--    <description>获取字典标签(多个)</description>-->

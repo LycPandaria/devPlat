@@ -46,7 +46,7 @@ public class LoginController extends BaseController {
             logger.debug("login success");
         }
 
-        return "index";
+        return "modules/sys/sysIndex";
 
     }
 }

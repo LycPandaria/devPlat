@@ -30,8 +30,6 @@ public class Menu extends DataEntity<Menu> {
 	private String isShow; 	// 是否在菜单中显示（1：显示；0：不显示）
 	private String permission; // 权限标识
 	
-	private String userId;
-	
 	public Menu(){
 		super();
 		this.sort = 30;
@@ -154,14 +152,6 @@ public class Menu extends DataEntity<Menu> {
 	@JSONField(serialize = false)
 	public static String getRootId(){
 		return "1";
-	}
-	
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 	@Override

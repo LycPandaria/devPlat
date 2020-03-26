@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.DictDao">
+<mapper namespace="edu.devplat.sys.dao.DictDao">
     
 	<select id="get" resultType="Dict">
 		SELECT 
@@ -18,10 +18,7 @@
 			AND type = #{type}
 		</if>
 		<if test="description != null and description != ''">
-			AND description LIKE 
-					<if test="dbName == 'oracle'">'%'||#{description}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{description}+'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{description}, '%')</if>
+			AND description LIKE CONCAT('%', #{description}, '%')
 		</if>
 		ORDER BY type, sort, update_date DESC
 	</select>
@@ -30,7 +27,7 @@
 		SELECT 
 			* 
 		FROM sys_dict 
-		WHERE del_flag = #{DEL_FLAG_NORMAL} 
+		WHERE del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY type, sort, update_date DESC
 	</select>
 	

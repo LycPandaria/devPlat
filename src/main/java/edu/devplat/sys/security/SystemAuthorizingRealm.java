@@ -57,7 +57,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
             byte[] salt = Encodes.decodeHex(user.getPassword().substring(0,16));
 
             // 认证过程
-            return new SimpleAuthenticationInfo(authToken.getUsername(),
+            return new SimpleAuthenticationInfo(new Principal(user),
                     user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
         }else
             return null;
@@ -89,51 +89,48 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         setCredentialsMatcher(matcher);
     }
 
-//    /**
-//     * 用户信息
-//     */
-//    public static class Principal implements Serializable {
-//
-//        private static final long serialVersionUID = 1L;
-//
-//        private String id; // 编号
-//        private String loginName; // 登录名
-//        private String name; // 姓名
-//
-//
-////		private Map<String, Object> cacheMap;
-//
-//        public Principal(User user, boolean mobileLogin) {
-//            this.id = user.getId();
-//            this.loginName = user.getLoginName();
-//            this.name = user.getName();
-//            this.mobileLogin = mobileLogin;
-//        }
-//
-//        public String getId() {
-//            return id;
-//        }
-//
-//        public String getLoginName() {
-//            return loginName;
-//        }
-//
-//        public String getName() {
-//            return name;
-//        }
-//
-//        public boolean isMobileLogin() {
-//            return mobileLogin;
-//        }
-//
-////		@JsonIgnore
-////		public Map<String, Object> getCacheMap() {
-////			if (cacheMap==null){
-////				cacheMap = new HashMap<String, Object>();
-////			}
-////			return cacheMap;
-////		}
-//
+    /**
+     * 用户信息,自定义的 Shiro principal，这样可以存储自己想要的信息
+     * 作为登陆了的用户的信息
+     */
+    public static class Principal implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        private String id; // 编号
+        private String loginName; // 登录名
+        private String name; // 姓名
+
+
+//		private Map<String, Object> cacheMap;
+
+        public Principal(User user) {
+            this.id = user.getId();
+            this.loginName = user.getLoginName();
+            this.name = user.getName();
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getLoginName() {
+            return loginName;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+
+//		@JsonIgnore
+//		public Map<String, Object> getCacheMap() {
+//			if (cacheMap==null){
+//				cacheMap = new HashMap<String, Object>();
+//			}
+//			return cacheMap;
+//		}
+
 //        /**
 //         * 获取SESSIONID
 //         */
@@ -144,11 +141,11 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 //                return "";
 //            }
 //        }
-//
-//        @Override
-//        public String toString() {
-//            return id;
-//        }
-//
-//    }
+
+        @Override
+        public String toString() {
+            return id;
+        }
+
+    }
 }
