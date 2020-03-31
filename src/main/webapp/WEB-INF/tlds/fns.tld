@@ -48,13 +48,13 @@
   </function>
   
   <!-- UserUtils -->
-<!--  <function>-->
-<!--    <description>获取当前用户对象</description>-->
-<!--    <name>getUser</name>-->
-<!--    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>-->
-<!--    <function-signature>com.thinkgem.jeesite.modules.sys.entity.User getUser()</function-signature>-->
-<!--    <example>${fns:getUser()}</example>  -->
-<!--  </function>-->
+  <function>
+    <description>获取当前用户对象</description>
+    <name>getUser</name>
+    <function-class>edu.devplat.sys.utils.UserUtils</function-class>
+    <function-signature>edu.devplat.sys.model.User getUser()</function-signature>
+    <example>${fns:getUser()}</example>
+  </function>
 <!--  -->
 <!--  <function>-->
 <!--    <description>根据编码获取用户对象</description>-->
@@ -129,21 +129,21 @@
 <!--    <example>${fns:getDictValue(label, type, defaultValue)}</example>  -->
 <!--  </function>-->
 <!--  -->
-<!--  <function>-->
-<!--    <description>获取字典对象列表</description>-->
-<!--    <name>getDictList</name>-->
-<!--    <function-class>com.thinkgem.jeesite.modules.sys.utils.DictUtils</function-class>-->
-<!--    <function-signature>java.util.List getDictList(java.lang.String)</function-signature>-->
-<!--    <example>${fns:getDictList(type)}</example>  -->
-<!--  </function>-->
-<!--  -->
-<!--  <function>-->
-<!--    <description>获取字典对象列表</description>-->
-<!--    <name>getDictListJson</name>-->
-<!--    <function-class>com.thinkgem.jeesite.modules.sys.utils.DictUtils</function-class>-->
-<!--    <function-signature>java.lang.String getDictListJson(java.lang.String)</function-signature>-->
-<!--    <example>${fns:getDictListJson(type)}</example>  -->
-<!--  </function>-->
+  <function>
+    <description>获取字典对象列表</description>
+    <name>getDictList</name>
+    <function-class>edu.devplat.sys.utils.DictUtils</function-class>
+    <function-signature>java.util.List getDictList(java.lang.String)</function-signature>
+    <example>${fns:getDictList(type)}</example>
+  </function>
+
+  <function>
+    <description>获取字典对象列表</description>
+    <name>getDictListJson</name>
+    <function-class>edu.devplat.sys.utils.DictUtils</function-class>
+    <function-signature>java.lang.String getDictListJson(java.lang.String)</function-signature>
+    <example>${fns:getDictListJson(type)}</example>
+  </function>
 <!--  -->
 <!--  &lt;!&ndash; Encodes &ndash;&gt;-->
 <!--  <function>-->

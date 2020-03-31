@@ -44,7 +44,9 @@ public class DictUtils {
         // TODO cache
         Map<String, List<Dict>> dictMap = Maps.newHashMap();
 
-        return dictDao.findList(new Dict(type, ""));
+        Dict dictType = new Dict();
+        dictType.setType(type);
+        return dictDao.findList(dictType);
     }
 
     /**

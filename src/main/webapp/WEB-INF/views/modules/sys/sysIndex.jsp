@@ -3,9 +3,12 @@
 <html>
 <head>
 	<title>${fns:getConfig('productName')}</title>
-	<meta name="decorator" content="blank"/><c:set var="tabmode" value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}"/>
-    <c:if test="${tabmode eq '1'}"><link rel="Stylesheet" href="${ctxStatic}/jerichotab/css/jquery.jerichotab.css" />
-    <script type="text/javascript" src="${ctxStatic}/jerichotab/js/jquery.jerichotab.js"></script></c:if>
+	<meta name="decorator" content="blank"/>
+    <c:set var="tabmode" value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}"/>
+<%--    <c:if test="${tabmode eq '1'}">--%>
+        <link rel="Stylesheet" href="${ctxStatic}/jerichotab/css/jquery.jerichotab.css" />
+        <script type="text/javascript" src="${ctxStatic}/jerichotab/js/jquery.jerichotab.js"></script>
+<%--    //</c:if>--%>
 	<style type="text/css">
 		#main {padding:0;margin:0;} #main .container-fluid{padding:0 4px 0 6px;}
 		#header {margin:0 0 8px;position:static;} #header li {font-size:14px;_font-size:12px;}
@@ -31,9 +34,11 @@
 				if ($(this).attr("target") == "mainFrame"){
 					$("#left,#openClose").hide();
 					wSizeWidth();
-					// <c:if test="${tabmode eq '1'}"> 隐藏页签
+					// 注释掉这些 test tabmode 可以一直开启页签模式
+					<%--// <c:if test="${tabmode eq '1'}"> 隐藏页签--%>
 					$(".jericho_tab").hide();
-					$("#mainFrame").show();//</c:if>
+					$("#mainFrame").show();
+					<%--//</c:if>--%>
 					return true;
 				}
 				// 左侧区域显示
@@ -90,8 +95,9 @@
 								$(href).toggle().parent().toggle();
 								return false;
 							}
-							// <c:if test="${tabmode eq '1'}"> 打开显示页签
-							return addTab($(this)); // </c:if>
+							<%--// <c:if test="${tabmode eq '1'}"> 打开显示页签--%>
+							return addTab($(this));
+							<%--// </c:if>--%>
 						});
 						// 默认选中第一个菜单
 						$(menuId + " .accordion-body a:first i").click();
@@ -104,10 +110,11 @@
 			});
 			// 初始化点击第一个一级菜单
 			$("#menu a.menu:first span").click();
-			// <c:if test="${tabmode eq '1'}"> 下拉菜单以选项卡方式打开
+			<%--// <c:if test="${tabmode eq '1'}"> 下拉菜单以选项卡方式打开--%>
 			$("#userInfo .dropdown-menu a").mouseup(function(){
 				return addTab($(this), true);
-			});// </c:if>
+			});
+			<%--// </c:if>--%>
 			// 鼠标移动到边界自动弹出左侧菜单
 			$("#openClose").mouseover(function(){
 				if($(this).hasClass("open")){
@@ -128,7 +135,7 @@
 			getNotifyNum(); //<c:if test="${oaNotifyRemindInterval ne '' && oaNotifyRemindInterval ne '0'}">
 			setInterval(getNotifyNum, ${oaNotifyRemindInterval}); //</c:if>
 		});
-		// <c:if test="${tabmode eq '1'}"> 添加一个页签
+		<%--// <c:if test="${tabmode eq '1'}"> 添加一个页签--%>
 		function addTab($this, refresh){
 			$(".jericho_tab").show();
 			$("#mainFrame").hide();
@@ -141,17 +148,20 @@
                     dataLink: $this.attr('href')
                 }
             }).loadData(refresh);
-			return false;
-		}// </c:if>
+			return true;
+		}
+		<%--// </c:if>--%>
 	</script>
 </head>
 <body>
 	<div id="main">
 		<div id="header" class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
-				<div class="brand"><span id="productName">${fns:getConfig('productName')}</span></div>
+				<div class="brand">
+                    <span id="productName">${fns:getConfig('productName')}</span>
+                </div>
 				<ul id="userControl" class="nav pull-right">
-					<li><a href="${pageContext.request.contextPath}${fns:getFrontPath()}/index.html" target="_blank" title="访问网站主页"><i class="icon-home"></i></a></li>
+					<li><a href="${pageContext.request.contextPath}${fns:getFrontPath()}" target="_blank" title="访问网站主页"><i class="icon-home"></i></a></li>
 					<li id="themeSwitch" class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" title="主题切换"><i class="icon-th-large"></i></a>
 						<ul class="dropdown-menu">
@@ -184,9 +194,11 @@
 					<ul id="menu" class="nav" style="*white-space:nowrap;float:none;">
 						<c:set var="firstMenu" value="true"/>
 						<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
+                            <!-- 这里只选取了 parent_id 为 1 的 Menu 展示在顶部，应该可以通过函数优化 TODO -->
 							<c:if test="${menu.parent.id eq '1'&&menu.isShow eq '1'}">
 								<li class="menu ${not empty firstMenu && firstMenu ? ' active' : ''}">
 									<c:if test="${empty menu.href}">
+                                        <!-- /sys/menu/tree?parentId= 会返回首页左侧的导航列表的 div -->
 										<a class="menu" href="javascript:" data-href="${ctx}/sys/menu/tree?parentId=${menu.id}" data-id="${menu.id}"><span>${menu.name}</span></a>
 									</c:if>
 									<c:if test="${not empty menu.href}">
@@ -238,8 +250,10 @@
 			htmlObj.css({"overflow-x":strs[1] < minWidth ? "auto" : "hidden", "overflow-y":strs[0] < minHeight ? "auto" : "hidden"});
 			mainObj.css("width",strs[1] < minWidth ? minWidth - 10 : "auto");
 			frameObj.height((strs[0] < minHeight ? minHeight : strs[0]) - headerObj.height() - footerObj.height() - (strs[1] < minWidth ? 42 : 28));
-			$("#openClose").height($("#openClose").height() - 5);// <c:if test="${tabmode eq '1'}"> 
-			$(".jericho_tab iframe").height($("#right").height() - tabTitleHeight); // </c:if>
+			$("#openClose").height($("#openClose").height() - 5);
+			<%--// <c:if test="${tabmode eq '1'}"> --%>
+			$(".jericho_tab iframe").height($("#right").height() - tabTitleHeight);
+			<%--// </c:if>--%>
 			wSizeWidth();
 		}
 		function wSizeWidth(){
@@ -249,10 +263,12 @@
 			}else{
 				$("#right").width("100%");
 			}
-		}// <c:if test="${tabmode eq '1'}"> 
+		}
+		<%--// <c:if test="${tabmode eq '1'}"> --%>
 		function openCloseClickCallBack(b){
 			$.fn.jerichoTab.resize();
-		} // </c:if>
+		}
+		<%--// </c:if>--%>
 	</script>
 	<script src="${ctxStatic}/common/wsize.min.js" type="text/javascript"></script>
 </body>

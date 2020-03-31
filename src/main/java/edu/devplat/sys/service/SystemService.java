@@ -1,6 +1,7 @@
 package edu.devplat.sys.service;
 
 import edu.devplat.common.service.BaseService;
+import edu.devplat.sys.dao.MenuDao;
 import edu.devplat.sys.dao.UserDao;
 import edu.devplat.sys.model.User;
 import edu.devplat.sys.utils.UserUtils;
@@ -22,6 +23,8 @@ public class SystemService extends BaseService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private MenuDao menuDao;
 
     //-- User Service --//
 
