@@ -2,6 +2,7 @@ package edu.devplat.sys.security;
 
 import edu.devplat.common.config.Global;
 import edu.devplat.common.utils.Encodes;
+import edu.devplat.common.utils.PasswordUtils;
 import edu.devplat.common.utils.SpringContextHolder;
 import edu.devplat.sys.dao.UserDao;
 import edu.devplat.sys.model.User;
@@ -84,8 +85,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
      */
     @PostConstruct
     public void initCredentialsMatcher() {
-        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(SystemService.HASH_ALGORITHM);
-        matcher.setHashIterations(SystemService.HASH_INTERATIONS);
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(PasswordUtils.HASH_ALGORITHM);
+        matcher.setHashIterations(PasswordUtils.HASH_INTERATIONS);
         setCredentialsMatcher(matcher);
     }
 

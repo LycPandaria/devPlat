@@ -100,6 +100,7 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
      */
     @Override
     protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
+        System.out.println("Password:" + getPassword(request));
         WebUtils.issueRedirect(request, response, getSuccessUrl(), null, true);
     }
 

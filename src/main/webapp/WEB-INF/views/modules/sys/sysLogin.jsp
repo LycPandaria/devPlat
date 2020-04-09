@@ -19,11 +19,24 @@
     </style>
 	<script type="text/javascript">
 		$(document).ready(function() {
+
+		    // 快速登陆
+            $("#username").val("thinkgem");
+            $("#password").val("admin");
+
 			$("#loginForm").validate({
+                debug: true,
 				rules: {
 					// 验证验证码
 					<%--validateCode: {remote: "${pageContext.request.contextPath}/servlet/validateCodeServlet"}--%>
 				},
+                submitHandler: function(form){
+				    var password = $("#password").val();
+				    alert(password);
+                    alert(sha1WithInterations(password, 1024));
+				    // 测试加密传输密码
+				    form.submit();
+                },
 				messages: {
 					username: {required: "请填写用户名."},password: {required: "请填写密码."},
 					validateCode: {remote: "验证码不正确.", required: "请填写验证码."}

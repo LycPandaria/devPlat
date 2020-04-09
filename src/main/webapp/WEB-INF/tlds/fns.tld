@@ -103,8 +103,8 @@
 <!--    <function-signature>java.lang.Object getCache(java.lang.String, java.lang.Object)</function-signature>-->
 <!--    <example>${fns:getCache(cacheName, defaultValue)}</example>  -->
 <!--  </function>-->
-<!--	-->
-<!--  &lt;!&ndash; DictUtils &ndash;&gt;-->
+
+  <!-- DictUtils -->
   <function>
     <description>获取字典标签</description>
     <name>getDictLabel</name>
