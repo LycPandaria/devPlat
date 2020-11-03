@@ -7,11 +7,11 @@
 
     <repositories>
 
-        <repository>
-            <id>jeesite-repos</id>
-            <name>Jeesite Repository</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-        </repository>
+    <repository>
+        <id>jeesite-repos</id>
+        <name>Jeesite Repository</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+    </repository>
 
     </repositories>
 

@@ -41,4 +41,18 @@ public class PasswordUtils {
         byte[] hashPassword = Digests.sha1(plain.getBytes(), salt, HASH_INTERATIONS);
         return Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword);
     }
+
+    /**
+     * 判断密码是否为简单密码
+     * 如果密码小于8位并且全为数字或全为字母则会被判定为简单密码
+     * @param password
+     * @return
+     */
+    public static boolean isSimplePwd(String password){
+        if(password.length() < 8)
+            return true;
+        // 密码不能仅为数字或字母
+        return password.matches("\\d+") || password.matches("[a-zA-Z]+");
+
+    }
 }

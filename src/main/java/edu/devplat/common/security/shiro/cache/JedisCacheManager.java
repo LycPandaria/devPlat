@@ -24,7 +24,7 @@ public class JedisCacheManager implements CacheManager {
     private String cacheKeyPrefix = "shiro_cache_";
 
     public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-        return null;
+        return new JedisCache<K, V>(cacheKeyPrefix + name);
     }
 
     public String getCacheKeyPrefix() {

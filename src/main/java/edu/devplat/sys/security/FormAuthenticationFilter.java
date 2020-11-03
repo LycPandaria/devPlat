@@ -4,12 +4,15 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import edu.devplat.common.utils.PasswordUtils;
 import edu.devplat.common.utils.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.web.util.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,6 +27,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.FormAuthenticationFilter {
+
+    private static Logger logger = LoggerFactory.getLogger(FormAuthenticationFilter.class);
 
     public static final String DEFAULT_MESSAGE_PARAM = "message";
     private String messageParam = DEFAULT_MESSAGE_PARAM;
@@ -100,8 +105,14 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
      */
     @Override
     protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
-        System.out.println("Password:" + getPassword(request));
-        WebUtils.issueRedirect(request, response, getSuccessUrl(), null, true);
+        String password = getPassword(request);
+        // 如果是简单密码，会跳转到修改密码页面
+        if(PasswordUtils.isSimplePwd(password)){
+            logger.debug("Simple Password detected!");
+            WebUtils.issueRedirect(request, response, "sys/user/modifyPwd", null, true);
+        }else{
+            WebUtils.issueRedirect(request, response, getSuccessUrl(), null, true);
+        }
     }
 
     /**
@@ -117,6 +128,7 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
         String className = e.getClass().getName();
         String msg = "";
 
+        logger.debug("formAuthenticationFilter-onLoginFailure");
         // 处理错误信息
         if(IncorrectCredentialsException.class.getName().equals(className)
         || UnknownAccountException.class.getName().equals(className)){

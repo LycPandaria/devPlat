@@ -24,6 +24,7 @@ public class UserController extends BaseController {
 
     @ModelAttribute
     public User get(@RequestParam(required = false) String id){
+        logger.debug("modelAttribute-get");
         if(StringUtils.isNotBlank(id)){
             return systemService.getUser(id);
         }else{
@@ -33,6 +34,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = {"index"})
     public String index(User user, Model model) {
+
         return "modules/sys/userIndex";
     }
 
@@ -45,11 +47,25 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "info")
     public String info(User user, HttpServletResponse response, Model model){
+        // 传入的 user 是表单中的 user，并不是现在登陆的用户
+        User currentUser = UserUtils.getUser();
+        if (StringUtils.isNotBlank(user.getName())){
+            currentUser.setEmail(user.getEmail());
+            currentUser.setPhone(user.getPhone());
+            currentUser.setMobile(user.getMobile());
+            currentUser.setRemarks(user.getRemarks());
+            currentUser.setPhoto(user.getPhoto());
+            //systemService.updateUserInfo(currentUser);
+            model.addAttribute("message", "保存用户信息成功");
+        }
+        // 在第一次进入页面，页面上的 user 信息是直接用的 currentUser 的信息
+        model.addAttribute("user", currentUser);
+
         return "modules/sys/userInfo";
     }
 
     /**
-     * 修改密码页面
+     * 修改密码页面,修改之后需要重新登陆
      * @param oldPassword
      * @param newPassword
      * @param model
@@ -63,13 +79,14 @@ public class UserController extends BaseController {
             if(PasswordUtils.validatePassword(oldPassword, user.getPassword())){
                 // update password
                 systemService.updatePasswordById(user.getId(), user.getLoginName(), newPassword);
-                model.addAttribute("message", "修改密码成功！");
+                model.addAttribute("message", "修改密码成功，重新登陆！");
+                UserUtils.getSubject().logout();
+                return "modules/sys/sysLogin";
             }else {
                 model.addAttribute("message", "修改密码失败，旧密码错误");
             }
         }
         return "modules/sys/userModifyPwd";
     }
-
 
 }

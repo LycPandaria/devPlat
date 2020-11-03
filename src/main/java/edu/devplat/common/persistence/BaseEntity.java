@@ -8,6 +8,8 @@ import java.util.Map;
 
 import edu.devplat.common.config.Global;
 import edu.devplat.common.utils.StringUtils;
+import edu.devplat.sys.model.User;
+import edu.devplat.sys.utils.UserUtils;
 
 /**
  * Entity 支持类
@@ -26,12 +28,20 @@ public abstract class BaseEntity<T> implements Serializable {
     public static final String DEL_FLAG_DELETE = "1";
     public static final String DEL_FLAG_AUDIT = "2";
 
-    // TODO 很多内容没补充
-
     /**
      * 实体编号（唯一标识）
      */
     protected String id;
+
+    /**
+     * 当前用户
+     */
+    protected User currentUser;
+
+    /**
+     * 当前实体分页对象
+     */
+    protected Page<T> page;
 
     /**
      * 自定义 SQL
@@ -53,16 +63,6 @@ public abstract class BaseEntity<T> implements Serializable {
         this.id = id;
     }
 
-    /**
-     * 插入之前执行的方法，子类实现
-     */
-    public abstract void preInsert();
-
-    /**
-     * 更新之前执行的方法，子类实现
-     */
-    public abstract void preUpdate();
-
     public String getId() {
         return id;
     }
@@ -71,6 +71,30 @@ public abstract class BaseEntity<T> implements Serializable {
         this.id = id;
     }
 
+    @JSONField(serialize = false)
+    public User getCurrentUser(){
+        if(currentUser == null)
+            currentUser = UserUtils.getUser();
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser){
+        this.currentUser = currentUser;
+    }
+
+    @JSONField(serialize = false)
+    public  Page<T> getPage(){
+        if(page == null)
+            page = new Page<T>();
+        return page;
+    }
+
+    public Page<T> setPage(Page<T> page){
+        this.page = page;
+        return page;
+    }
+
+    @JSONField(serialize = false)
     public Map<String, String> getSqlMap() {
         if(sqlMap == null)
             sqlMap = Maps.newHashMap();
@@ -80,6 +104,16 @@ public abstract class BaseEntity<T> implements Serializable {
     public void setSqlMap(Map<String, String> sqlMap) {
         this.sqlMap = sqlMap;
     }
+
+    /**
+     * 插入之前执行的方法，子类实现
+     */
+    public abstract void preInsert();
+
+    /**
+     * 更新之前执行的方法，子类实现
+     */
+    public abstract void preUpdate();
 
     /**
      * 是否是新记录（默认：false），调用setIsNewRecord()设置新记录，使用自定义ID。

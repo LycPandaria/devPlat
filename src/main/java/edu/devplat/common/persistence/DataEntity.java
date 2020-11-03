@@ -1,7 +1,11 @@
 package edu.devplat.common.persistence;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import edu.devplat.common.utils.IdGen;
+import edu.devplat.common.utils.StringUtils;
 import edu.devplat.sys.model.User;
+import edu.devplat.sys.utils.UserUtils;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
 
@@ -11,8 +15,6 @@ import java.util.Date;
  */
 public abstract class DataEntity<T> extends BaseEntity<T> {
 
-    // TODO currentUser 的内容还没加上
-
     private static final long serialVersionUDI = 1L;
 
     protected String remarks;	// 备注
@@ -20,9 +22,11 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
     protected Date createDate;	// 创建日期
     protected User updateBy;	// 更新者
     protected Date updateDate;	// 更新日期
+    protected String delflag;   // 删除标记
 
     public DataEntity(){
         super();
+        this.delflag = DEL_FLAG_NORMAL;
     }
 
     public DataEntity(String id){
@@ -37,16 +41,27 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
         if(!this.isNewRecord)
             setId(IdGen.uuid());    // 如果是新记录，为其设置一个 ID
 
+        // set updateBy and createBy
+        User user = UserUtils.getUser();
+        if(StringUtils.isNotBlank(user.getId())){
+            this.updateBy = user;
+            this.createBy = user;
+        }
+
         this.createDate = new Date();   // 设置新纪录的新建时间，并设置其修改时间和新建时间一样
         this.updateDate = this.createDate;
     }
 
     @Override
     public void preUpdate() {
-
+        User user = UserUtils.getUser();
+        if(StringUtils.isNotBlank(user.getId())){
+            this.updateBy = user;
+        }
         this.updateDate = new Date();
     }
 
+    @Length(min = 0, max = 255)
     public String getRemarks() {
         return remarks;
     }
@@ -55,6 +70,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
         this.remarks = remarks;
     }
 
+    @JSONField(serialize = false)
     public User getCreateBy() {
         return createBy;
     }
@@ -63,6 +79,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
         this.createBy = createBy;
     }
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss") // FastJson包使用注解
     public Date getCreateDate() {
         return createDate;
     }
@@ -71,6 +88,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
         this.createDate = createDate;
     }
 
+    @JSONField(serialize = false)
     public User getUpdateBy() {
         return updateBy;
     }
@@ -79,11 +97,22 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
         this.updateBy = updateBy;
     }
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss") // FastJson包使用注解
     public Date getUpdateDate() {
         return updateDate;
     }
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+    
+    @JSONField(serialize = false)
+    @Length(min = 1, max = 0)
+    public String getDelflag(){
+        return delflag;
+    }
+    
+    public void setDelflag(String delflag){
+        this.delflag = delflag;
     }
 }

@@ -9,7 +9,12 @@ import static edu.devplat.sys.service.SystemService.*;
 public class TestPassword {
 
     public static void main(String[] args) {
-        System.out.println(entryptPassword("admin"));
+        //System.out.println(entryptPassword("admin"));
+
+        String password = "111111111111a@@__";
+        //System.out.println(password.matches("\\d+"));
+        //System.out.println(password.matches("[A-z]+"));
+        System.out.println(PasswordUtils.isSimplePwd(password));
     }
 
     public static String entryptPassword(String plainPassword) {

@@ -48,6 +48,11 @@
         <property name="typeAliasesSuperType" value="edu.devplat.common.persistence.BaseEntity"/>
     </bean>
 
+    <!-- 缓存管理器 通过配置文件构建出缓存管理器 cacheManager-->
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:cache/ehcache.xml" />
+    </bean>
+
     <!-- spring可以自动去扫描base-pack下面的包或者子包下面的java文件，
     	如果扫描到有Spring的相关注解的类，则把这些类注册为Spring的bean -->
     <!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。  -->

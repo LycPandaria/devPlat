@@ -28,6 +28,8 @@ public class SystemService extends BaseService {
 
     //-- User Service --//
 
+    // TODO
+
     /**
      * 获取用户
      *
@@ -55,11 +57,14 @@ public class SystemService extends BaseService {
      * @param loginName
      * @param newPassword
      */
+    @Transactional(readOnly = false)
     public void updatePasswordById(String uid, String loginName, String newPassword) {
         User user = new User(uid);
         user.setPassword(PasswordUtils.entryptPassword(newPassword));
         userDao.updatePasswordById(user);
-        // TODO cache
+        // 清除用户缓存
+        user.setLoginName(loginName);
+        UserUtils.clearCache(user);
     }
 
 
