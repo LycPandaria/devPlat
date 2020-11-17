@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.devplat.modules.sys.dao.RoleDao">
+<mapper namespace="edu.devplat.sys.dao.RoleDao">
     
     <resultMap id="roleResult" type="Role">
 		<id property="id" column="id" />
@@ -87,7 +87,7 @@
 			AND u.login_name = #{user.loginName}
 		</if>
 		<!-- 数据范围过滤 -->
-		${sqlMap.dsf}
+		<!-- ${sqlMap.dsf} -->
 		ORDER BY o.code, a.name
 	</select>
 	

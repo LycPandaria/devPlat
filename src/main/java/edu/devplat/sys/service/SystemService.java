@@ -67,5 +67,14 @@ public class SystemService extends BaseService {
         UserUtils.clearCache(user);
     }
 
+    @Transactional(readOnly = false)
+    public void updateUserInfo(User user){
+        // 记录 update 时间 和 操作者
+        user.preUpdate();
+        userDao.updateUserInfo(user);
+        // 清除用户缓存
+        UserUtils.clearCache(user);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package edu.devplat.sys.web;
 
+import edu.devplat.common.config.Global;
 import edu.devplat.common.utils.PasswordUtils;
 import edu.devplat.common.utils.StringUtils;
 import edu.devplat.common.web.BaseController;
@@ -55,12 +56,12 @@ public class UserController extends BaseController {
             currentUser.setMobile(user.getMobile());
             currentUser.setRemarks(user.getRemarks());
             currentUser.setPhoto(user.getPhoto());
-            //systemService.updateUserInfo(currentUser);
+            systemService.updateUserInfo(currentUser);
             model.addAttribute("message", "保存用户信息成功");
         }
         // 在第一次进入页面，页面上的 user 信息是直接用的 currentUser 的信息
         model.addAttribute("user", currentUser);
-
+        model.addAttribute("Global", Global.getInstance());
         return "modules/sys/userInfo";
     }
 

@@ -31,6 +31,8 @@ public class UserUtils {
     private static final String CACHE_ROLE_LIST = "roleList";
     private static final String CACHE_MENU_LIST = "menuList";
 
+    private static final String USER_CACHE_LIST_BY_OFFICE_ID_PREFIX = "oid_";
+
     /**
      * 根据ID获取用户
      * @param id
@@ -92,6 +94,10 @@ public class UserUtils {
         CacheUtils.remove(USER_CACHE, USER_CACHE_ID_PREFIX + user.getId());
         CacheUtils.remove(USER_CACHE, USER_CACHE_LOGIN_NAME_PREFIX + user.getLoginName());
         CacheUtils.remove(USER_CACHE, USER_CACHE_LOGIN_NAME_PREFIX + user.getOldLoginName());
+
+        // 清理 office cache
+        if(user.getOffice() != null && user.getOffice().getId() != null)
+            CacheUtils.remove(USER_CACHE, USER_CACHE_LIST_BY_OFFICE_ID_PREFIX + user.getOffice().getId());
     }
 
 
